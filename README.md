@@ -31,16 +31,22 @@ The sum phase measures sequential read performance plus simple integer accumulat
 
 ## matrix_multiply.cpp
 
+This program benchmarks naive matrix multiplication at several sizes (`128`, `256`, `512`, `1024`). For each size it fills `A` with `1.0` and `B` with `2.0`, then times only the multiply step (not initialization).
+
+For each output element `C[i][j]`, three nested loops compute the dot product of row `i` of `A` and column `j` of `B`. Matrices are stored as 1D `std::vector<double>`, so `A[i][j]` is `A[i * n + j]`. The algorithm is **O(n³)** and is **not optimized**—no blocking, SIMD, or parallelism.
+
+Build and run:
+
+```bash
+g++ -std=c++17 -O2 cpp/matrix_multiply.cpp -o matrix_multiply
+./matrix_multiply
+```
+
 Result on my MacBook Pro:
 
-- Matrix size: 512 x 512
-- C[0][0]: 1024
-- Time taken: 132 ms
-
-This program implements naive matrix multiplication using three nested loops.
-
-For each output element `C[i][j]`, it computes the dot product between row `i` of matrix `A` and column `j` of matrix `B`.
-
-The matrices are stored as 1D vectors, so `A[i][j]` is represented as `A[i * n + j]`.
-
-The time complexity is O(n^3).
+| Matrix size | C[0][0] | Time (ms) |
+|-------------|---------|-----------|
+| 128         | 256     | 1         |
+| 256         | 512     | 15        |
+| 512         | 1024    | 115       |
+| 1024        | 2048    | 857       |
