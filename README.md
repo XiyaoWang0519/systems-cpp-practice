@@ -28,3 +28,19 @@ The program fills a large `std::vector<int>` and then sums all elements.
 
 The fill phase measures sequential write performance.
 The sum phase measures sequential read performance plus simple integer accumulation.
+
+## matrix_multiply.cpp
+
+Result on my MacBook Pro:
+
+- Matrix size: 512 x 512
+- C[0][0]: 1024
+- Time taken: 132 ms
+
+This program implements naive matrix multiplication using three nested loops.
+
+For each output element `C[i][j]`, it computes the dot product between row `i` of matrix `A` and column `j` of matrix `B`.
+
+The matrices are stored as 1D vectors, so `A[i][j]` is represented as `A[i * n + j]`.
+
+The time complexity is O(n^3).

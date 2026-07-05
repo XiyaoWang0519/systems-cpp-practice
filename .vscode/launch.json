@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/xiyaowang/Documents/Projects/systems-cpp-practice/cpp",
+      "program": "/Users/xiyaowang/Documents/Projects/systems-cpp-practice/cpp/build/Debug/outDebug"
+    }
+  ]
+}
