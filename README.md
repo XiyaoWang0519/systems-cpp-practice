@@ -11,7 +11,6 @@ Current focus:
 Planned exercises:
 - vector benchmark
 - naive matrix multiplication
-- CSV parser
 - latency timer
 - simple multithreading example
 
@@ -50,3 +49,36 @@ Result on my MacBook Pro:
 | 256         | 512     | 15        |
 | 512         | 1024    | 115       |
 | 1024        | 2048    | 857       |
+
+## csv_parser.cpp
+
+This program reads benchmark-style metrics from a CSV file and computes basic statistics.
+
+It reads `data/sample_metrics.csv` (or a path passed on the command line), skips the header row, parses each row into a `Row` struct (`name`, `latency_ms`, `throughput_tokens_per_sec`), and reports:
+
+- average latency
+- max latency (with run name)
+- average throughput
+- max throughput (with run name)
+
+Malformed rows are skipped and counted.
+
+Build and run:
+
+```bash
+g++ -std=c++17 -O2 -Wall -Wextra cpp/csv_parser.cpp -o csv_parser
+./csv_parser
+```
+
+Result on my MacBook Pro:
+
+```
+Parsed rows: 5
+Skipped rows: 0
+
+Average latency: 14.10 ms
+Max latency: 18.30 ms (run_4)
+
+Average throughput: 79.00 tokens/sec
+Max throughput: 88.40 tokens/sec (run_3)
+```
