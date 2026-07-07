@@ -1,0 +1,15 @@
+# Local exercise binaries
+/csv_parser
+/matrix_multiply
+/vector_benchmark
+
+# C/C++ build outputs
+*.o
+*.obj
+*.out
+*.exe
+*.dSYM/
+
+# Common build directories
+/build/
+/cmake-build-*/
