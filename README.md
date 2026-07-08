@@ -14,6 +14,12 @@ Planned exercises:
 - latency timer
 - simple multithreading example
 
+Completed exercises:
+- vector benchmark
+- naive matrix multiplication
+- CSV parser
+- latency timer
+
 ## vector_benchmark.cpp
 
 Result on my MacBook Pro:
@@ -82,3 +88,25 @@ Max latency: 18.30 ms (run_4)
 Average throughput: 79.00 tokens/sec
 Max throughput: 88.40 tokens/sec (run_3)
 ```
+
+## latency_timer.cpp
+
+This program defines a reusable `Timer` class (`start`, `stop`, `elapsed_ms`) built on `std::chrono::steady_clock`, then uses it to time summing a `std::vector<int>` of 100,000,000 elements.
+
+`start_time` and `end_time` are private members, and `elapsed_ms` is a `const` member function that returns the duration between them in milliseconds. Setup (filling the vector) happens before `timer.start()`, so only the summation loop is measured.
+
+Build and run:
+
+```bash
+g++ -std=c++17 -O2 cpp/latency_timer.cpp -o cpp/latency_timer
+./cpp/latency_timer
+```
+
+Result on my MacBook Pro:
+
+```
+sum = 100000000
+elapsed time = 23.0945 ms
+```
+
+This only measures the sum loop, not vector construction/fill, and is a single run rather than an average over multiple trials.
