@@ -2,6 +2,7 @@
 /csv_parser
 /matrix_multiply
 /vector_benchmark
+/cpp/latency_timer
 
 # C/C++ build outputs
 *.o
