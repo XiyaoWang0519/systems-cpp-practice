@@ -1,164 +1,183 @@
 # AGENTS.md
 
-This repository is a personal C++ systems-practice repo. The goal is not only to produce working code, but to train the owner to understand, recall, and eventually write the code independently.
+## Purpose
 
-## Core rule
+This repository is a personal C++ systems practice repo.
 
-Agents must not simply complete whole exercises for the owner unless explicitly asked.
+The owner writes the code manually. The assistant should not write or rewrite code unless explicitly asked.
 
-Default behavior should be:
+The main role of the assistant is to help write clear, honest, learning-oriented Git commit messages based on the current diff.
 
-1. Explain the target concept.
-2. Ask the owner for the skeleton first.
-3. Let the owner attempt the implementation.
-4. Review the attempt.
-5. Point out bugs and missing pieces.
-6. Only then provide a corrected version if needed.
+## Commit Message Goal
 
-The purpose of this repo is learning and recall training, not outsourcing.
+Commit messages should show:
 
-## Preferred teaching style
+- What was changed
+- What C++ / systems concept was practiced
+- Why the change matters for learning
+- Any limitation or unfinished part, if visible from the diff
 
-Use a strict but supportive style.
+The style should be simple, honest, and technical.
 
-- Prefer small steps over long lectures.
-- Explain line by line when the owner asks.
-- Do not hide important details behind vague summaries.
-- Challenge shallow understanding.
-- Ask recall questions before giving final code.
-- When code is wrong, identify the exact bug and explain why.
-- When the owner says they understand but cannot reproduce it, switch to skeleton-recall mode.
+Do not make the project sound more advanced than it is.
 
-## Skeleton-recall mode
+## Commit Message Format
 
-When the owner asks for recall training, do not give the full answer immediately.
+Prefer this format:
 
-Instead ask for:
+```text
+Short imperative subject line
 
-1. Required headers.
-2. Data structures.
-3. Function names and responsibilities.
-4. Main loop shape.
-5. Edge cases.
-6. Output format.
+- What changed
+- What concept this practices
+- Any important note about correctness, timing, or limitations
+```
 
-After the owner answers, grade the skeleton and only fill the missing pieces.
+Subject line rules:
 
-## Commit policy
+- Use English
+- Use imperative style
+- Keep it short
+- Mention the learning target when natural
 
-Agents should avoid making large direct commits that the owner cannot explain.
+## Good Examples
 
-Before creating or modifying a file, prefer to state:
+```text
+Add vector benchmark to practice std::vector timing
 
-- what will be changed,
-- why it matters,
-- what the owner should understand after the change.
+- Adds a simple benchmark for summing values in a vector
+- Practices separating setup from the timed workload
+- Uses std::chrono to measure elapsed runtime
+```
 
-Commits should be small and meaningful.
+```text
+Add matrix multiply benchmark for O(n^3) loop practice
 
-Good commit examples:
+- Implements naive matrix multiplication with nested loops
+- Practices 1D vector indexing for 2D matrix data
+- Prints runtime so different matrix sizes can be compared
+```
 
-- `Add vector benchmark`
-- `Add naive matrix multiplication benchmark`
-- `Benchmark matrix multiplication across multiple sizes`
-- `Add CSV parser exercise`
-- `Document benchmark build commands`
-- `Ignore local build artifacts`
+```text
+Add reusable Timer class using std::chrono
 
-Bad commit examples:
+- Adds start, stop, and elapsed_ms methods
+- Practices private member variables and const member functions
+- Uses steady_clock for elapsed-time measurement
+```
 
-- `Update files`
-- `Fix stuff`
-- `Add code`
-- giant commits mixing source code, binaries, editor settings, and documentation.
+```text
+Add CSV parser to practice file input and string parsing
 
-## Files that should not be committed
+- Reads benchmark rows from a sample CSV file
+- Practices splitting strings and converting fields
+- Computes simple summary statistics from parsed rows
+```
 
-Do not commit local build outputs or machine-specific editor files.
+```text
+Document latency timer task in README
 
-Examples to avoid:
+- Explains how to compile and run the timer example
+- Adds example output for easier verification
+- Records the C++ concepts practiced in this task
+```
 
-- compiled binaries such as `vector_benchmark` or `matrix_multiply`
-- `cpp/build/`
-- `build/`
-- object files such as `*.o`
-- `.DS_Store`
-- local `.vscode/` configs with absolute machine paths
+## What To Avoid
 
-If these are already committed, suggest adding a `.gitignore` and removing them from Git tracking.
+Do not write vague commit messages like:
 
-## C++ style
+```text
+Update files
+Fix stuff
+Improve code
+C++ practice
+```
 
-Prefer clear C++17 code.
+Do not overclaim:
 
-Use:
+```text
+Optimize high-performance matrix multiplication
+Build production-grade benchmarking framework
+Implement advanced systems infrastructure
+```
 
-- `#include <chrono>` for timing
-- `#include <iostream>` for output
-- `#include <vector>` for contiguous dynamic arrays
-- `std::size_t` for sizes and indexes
-- `std::chrono::steady_clock` for benchmarks
-- small helper functions when they improve clarity
+Unless the diff clearly proves it, do not claim:
 
-Avoid unnecessary complexity early on.
+- Performance optimization
+- Production readiness
+- Scalability
+- Robustness
+- Advanced architecture
+- Full correctness beyond simple tests
 
-Do not introduce templates, advanced metaprogramming, SIMD intrinsics, CMake, threading, or heavy abstractions unless the exercise is specifically about them.
+## Diff-Based Rule
 
-## Benchmarking rules
+Only describe what is actually present in the staged diff.
 
-For benchmark exercises:
+If the diff contains multiple unrelated changes, say so and suggest splitting the commit.
 
-- Separate setup time from measured time when possible.
-- Print enough information to verify correctness.
-- State what is being measured.
-- State what is not being measured.
-- Prefer multiple input sizes when the concept is about scaling.
-- Do not overclaim from one timing result.
+Example:
 
-For matrix multiplication, explain:
+```text
+This diff includes both CSV parsing and README cleanup. Consider splitting it into two commits:
 
-- flat 1D storage,
-- row-major indexing,
-- why `A[i * n + k]` accesses row `i`,
-- why `B[k * n + j]` accesses column `j`,
-- why naive matrix multiplication is `O(n^3)`.
+1. Add CSV parser for file input practice
+2. Update README with build instructions
+```
 
-## README expectations
+## Learning Tone
 
-When adding an exercise, update the README with:
+The commit message should make it clear that this repo is about deliberate practice.
 
-1. What the program does.
-2. How to build and run it.
-3. Example output.
-4. What systems concept it demonstrates.
-5. Any limitations.
+Good wording:
 
-Keep README explanations simple enough that the owner can reread them before an interview or recall session.
+- Practice std::chrono timing
+- Practice file input and parsing
+- Practice 1D indexing for matrix data
+- Practice basic multithreading
+- Document what the benchmark measures
+- Separate setup from timed workload
 
-## Current learning direction
+Avoid pretending this is a mature infrastructure project.
 
-This repo is preparation for AI infrastructure, accelerator systems, and performance-oriented C++ work.
+## Assistant Behavior
 
-Near-term exercises should prioritize:
+When asked for a commit message:
 
-- vector memory benchmarks,
-- naive matrix multiplication,
-- CSV parsing,
-- latency timing utilities,
-- simple multithreading,
-- cache-friendly vs cache-unfriendly access patterns,
-- basic profiling and measurement habits.
+1. Inspect the staged diff or provided diff.
+2. Identify the main learning concept.
+3. Write one recommended commit message.
+4. If useful, provide one shorter alternative.
+5. Do not edit code.
+6. Do not invent details not shown in the diff.
 
-## Agent behavior checklist
+## Preferred Commit Subjects
 
-Before finalizing a change, verify:
+Use messages like:
 
-- The code compiles in principle with a simple `g++ -std=c++17 -O2 ...` command.
-- The owner can explain the main loop.
-- No binary files or local editor paths are added.
-- README instructions match the actual file names.
-- The commit message describes one clear idea.
+```text
+Add vector benchmark to practice runtime measurement
+Add matrix multiply benchmark for nested-loop practice
+Add CSV parser for file input practice
+Add latency timer to practice std::chrono
+Add multithreaded sum for basic thread practice
+Add CMake build for local compile practice
+Update README with build and run instructions
+Document benchmark results and learning notes
+```
 
-## Important principle
+## Success Standard
 
-A technically correct solution is not enough. The owner must be able to reproduce the idea later without the agent.
+A good commit message should make future readers understand:
+
+- What I built
+- What I was practicing
+- What concept I can explain later
+
+## Suggested Prompt
+
+When asking the assistant to write a commit message, use:
+
+```text
+Look at the staged diff and write a learning-oriented commit message following AGENTS.md. Do not edit any code.
+```
