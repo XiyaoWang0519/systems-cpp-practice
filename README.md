@@ -20,13 +20,36 @@ Completed exercises:
 - latency timer
 - multithreaded sum
 
+## Build with CMake
+
+Configure and build all exercises from the repository root:
+
+```bash
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build --parallel
+```
+
+Run an individual exercise from the build directory, for example:
+
+```bash
+./build/multithread_sum
+```
+
+The CSV parser needs the sample data path when run from the repository root:
+
+```bash
+./build/csv_parser data/sample_metrics.csv
+```
+
+Verified with CMake 4.2.1 and AppleClang 17.0.0. All five targets built and ran successfully. Timing results below are from this one Release build run and will vary between runs.
+
 ## vector_benchmark.cpp
 
 Result on my MacBook Pro:
 
 - Vector size: 100,000,000 integers
 - Sum: 4,950,000,000
-- Fill time: 16 ms
+- Fill time: 30 ms
 - Sum time: 5 ms
 
 The program fills a large `std::vector<int>` and then sums all elements.
@@ -51,10 +74,10 @@ Result on my MacBook Pro:
 
 | Matrix size | C[0][0] | Time (ms) |
 |-------------|---------|-----------|
-| 128         | 256     | 1         |
-| 256         | 512     | 15        |
-| 512         | 1024    | 115       |
-| 1024        | 2048    | 857       |
+| 128         | 256     | 3         |
+| 256         | 512     | 20        |
+| 512         | 1024    | 123       |
+| 1024        | 2048    | 935       |
 
 ## csv_parser.cpp
 
@@ -106,7 +129,7 @@ Result on my MacBook Pro:
 
 ```
 sum = 100000000
-elapsed time = 23.0945 ms
+elapsed time = 27.3639 ms
 ```
 
 This only measures the sum loop, not vector construction/fill, and is a single run rather than an average over multiple trials.
@@ -133,8 +156,8 @@ num_threads = 4
 single-thread sum = 100000000
 multi-thread sum  = 100000000
 
-single-thread time = 8.493 ms
-multi-thread time  = 2.24592 ms
+single-thread time = 23.4063 ms
+multi-thread time  = 3.15829 ms
 
 result: correct
 ```
