@@ -3,6 +3,7 @@
 /matrix_multiply
 /vector_benchmark
 /cpp/latency_timer
+/cpp/multithread_sum
 
 # C/C++ build outputs
 *.o

@@ -12,13 +12,13 @@ Planned exercises:
 - vector benchmark
 - naive matrix multiplication
 - latency timer
-- simple multithreading example
 
 Completed exercises:
 - vector benchmark
 - naive matrix multiplication
 - CSV parser
 - latency timer
+- multithreaded sum
 
 ## vector_benchmark.cpp
 
@@ -110,3 +110,33 @@ elapsed time = 23.0945 ms
 ```
 
 This only measures the sum loop, not vector construction/fill, and is a single run rather than an average over multiple trials.
+
+## multithread_sum.cpp
+
+This program compares summing a large `std::vector<int>` with one thread versus four threads.
+
+The multithreaded version splits the vector into contiguous chunks, starts one `std::thread` per chunk, stores each partial sum in a separate slot, joins all threads, and then combines the partial sums.
+
+Build and run:
+
+```bash
+g++ -std=c++17 -O2 -pthread cpp/multithread_sum.cpp -o cpp/multithread_sum
+./cpp/multithread_sum
+```
+
+Result on my MacBook Pro:
+
+```
+data size = 100000000
+num_threads = 4
+
+single-thread sum = 100000000
+multi-thread sum  = 100000000
+
+single-thread time = 8.493 ms
+multi-thread time  = 2.24592 ms
+
+result: correct
+```
+
+This is a simple thread-splitting exercise, not a full benchmark. The timing is from one run, so it can vary between runs.
