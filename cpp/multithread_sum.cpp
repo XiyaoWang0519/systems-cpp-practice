@@ -23,16 +23,6 @@ private:
     std::chrono::steady_clock::time_point end_time;
 };
 
-long long single_thread_sum(const std::vector<int>& data) {
-    long long sum = 0;
-
-    for (int x : data) {
-        sum += x;
-    }
-
-    return sum;
-}
-
 long long partial_sum_range(const std::vector<int>& data,
                             std::size_t begin,
                             std::size_t end) {
@@ -43,6 +33,10 @@ long long partial_sum_range(const std::vector<int>& data,
     }
 
     return sum;
+}
+
+long long single_thread_sum(const std::vector<int>& data) {
+    return partial_sum_range(data, 0, data.size());
 }
 
 long long multi_thread_sum(const std::vector<int>& data, int num_threads) {

@@ -138,16 +138,42 @@ This only measures the sum loop, not vector construction/fill, and is a single r
 
 This program compares summing a large `std::vector<int>` with one thread versus four threads.
 
-The multithreaded version splits the vector into contiguous chunks, starts one `std::thread` per chunk, stores each partial sum in a separate slot, joins all threads, and then combines the partial sums.
+Both paths call the same helper, `partial_sum_range`, so the only intentional difference is thread count. The multithreaded version splits the vector into contiguous chunks, starts one `std::thread` per chunk, stores each partial sum in a separate slot, joins all threads, and then combines the partial sums.
 
-Build and run:
+Build and run (prefer the CMake Release build above):
+
+```bash
+./build/multithread_sum
+```
+
+Or compile directly:
 
 ```bash
 g++ -std=c++17 -O2 -pthread cpp/multithread_sum.cpp -o cpp/multithread_sum
 ./cpp/multithread_sum
 ```
 
-Result on my MacBook Pro:
+### Earlier misleading result
+
+Before the shared helper, the single-thread path used a range-based loop and each worker used an index loop:
+
+```
+single-thread time = 23.4063 ms
+multi-thread time  = 3.15829 ms
+```
+
+That looked like about **7.4×** speedup with only 4 threads. The timing ranges themselves were fine (single-thread timed only the sum; multi-thread timed create + work + `join()`), and both paths summed the same 100,000,000-element vector. The problem was that the experiment changed two things at once:
+
+1. one thread vs four threads
+2. range-based loop vs index-based loop
+
+Apple Clang can optimize those two loop styles differently (vectorization, unrolling, reduction, inlining), so the ~7.4× figure was not a clean measure of multithreading.
+
+### After sharing one sum function
+
+`single_thread_sum` now calls `partial_sum_range` with the full range, so both paths use the same summation code.
+
+Example Release result on my MacBook Pro (one of five runs):
 
 ```
 data size = 100000000
@@ -156,10 +182,12 @@ num_threads = 4
 single-thread sum = 100000000
 multi-thread sum  = 100000000
 
-single-thread time = 23.4063 ms
-multi-thread time  = 3.15829 ms
+single-thread time = 13.9101 ms
+multi-thread time  = 3.34779 ms
 
 result: correct
 ```
 
-This is a simple thread-splitting exercise, not a full benchmark. The timing is from one run, so it can vary between runs.
+Across five Release runs, single-thread time was roughly 14–31 ms and multi-thread time roughly 2–6 ms. Speedup was often near 4×, but sometimes higher. An unoptimized build was closer to a steady ~4×.
+
+Sharing one sum function makes the comparison fairer, but Release builds can still optimize different call sites differently, and single-run timing is noisy (CPU frequency, cache, scheduling). This is a simple thread-splitting exercise, not a full benchmark.
